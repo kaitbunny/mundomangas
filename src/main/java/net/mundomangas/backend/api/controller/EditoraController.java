@@ -19,8 +19,8 @@ public class EditoraController {
 	@Autowired
 	private CadastroEditoraService cadastro;
 	
-	@GetMapping("/pagina/{page}")
-	private List<Editora> listar(@PathVariable Integer page) {
+	@GetMapping
+	private List<Editora> listar(@RequestParam("page") Integer page) {
 		return cadastro.listarPorPagina(page);
 	}
 	
@@ -30,8 +30,10 @@ public class EditoraController {
 	}
 	
 	@GetMapping("/por-nome")
-	private List<Editora> buscarPorNome(@RequestParam("nome") String nome) {
-		return cadastro.findByName(nome);
+	private List<Editora> buscarPorNome(@RequestParam("nome") String nome,
+										@RequestParam("page") Integer page) {
+		
+		return cadastro.findByName(nome, page);
 	}
 	
 }
