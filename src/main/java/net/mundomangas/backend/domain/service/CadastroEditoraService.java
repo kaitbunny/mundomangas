@@ -28,18 +28,34 @@ public class CadastroEditoraService {
 	}
 
 
-	public List<Editora> findByName(String nome, Integer page) {
-		Sort sort = Sort.by("nome");
-		Pageable pageable = PageRequest.of(page - 1, 20, sort);
+	public List<Editora> findByName(String nome, Integer page, String order) {
+		Pageable pageable = pageableBuilder(page, order);
 		
 		Page<Editora> list = repository.findByNomeContaining(nome, pageable);
 		return list.toList();
 	}
 
-
-	public List<Editora> listarPorPagina(Integer page) {
-		Sort sort = Sort.by("nome");
-		Pageable pageable = PageRequest.of(page - 1, 20, sort);
+	public List<Editora> listarPorPagina(Integer page, String order) {
+		Pageable pageable = pageableBuilder(page, order);
+		
 		return repository.findAll(pageable).toList();
 	}
+
+	private Pageable pageableBuilder(Integer page, String order) {
+		Sort sort = null;
+		Pageable pageable = null;
+		
+		if(order.equals("asc")) {
+			sort = Sort.by("nome").ascending();
+			return pageable = PageRequest.of(page - 1, 20, sort);
+		}
+		else if(order.equals("desc")) {
+			sort = Sort.by("nome").descending();
+			return pageable = PageRequest.of(page - 1, 20, sort);
+		}
+		else {
+			return pageable = PageRequest.of(page - 1, 20);
+		}
+	}
+	
 }

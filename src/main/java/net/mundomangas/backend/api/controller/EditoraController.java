@@ -20,8 +20,10 @@ public class EditoraController {
 	private CadastroEditoraService cadastro;
 	
 	@GetMapping
-	private List<Editora> listar(@RequestParam("page") Integer page) {
-		return cadastro.listarPorPagina(page);
+	private List<Editora> listar(@RequestParam("page") Integer page,
+								 @RequestParam("order") String order) {
+		
+		return cadastro.listarPorPagina(page, order);
 	}
 	
 	@GetMapping("/{id}")
@@ -31,9 +33,10 @@ public class EditoraController {
 	
 	@GetMapping("/por-nome")
 	private List<Editora> buscarPorNome(@RequestParam("nome") String nome,
-										@RequestParam("page") Integer page) {
+										@RequestParam("page") Integer page,
+										@RequestParam("order") String order) {
 		
-		return cadastro.findByName(nome, page);
+		return cadastro.findByName(nome, page, order);
 	}
 	
 }
