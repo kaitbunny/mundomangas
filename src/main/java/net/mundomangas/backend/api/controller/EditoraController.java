@@ -27,4 +27,6 @@ public class EditoraController {
 		Pageable pageable = PageRequest.of(page - 1, 20, sort);
 		return repository.findAll(pageable).toList();
 	}
+	
+	
 }
