@@ -8,7 +8,7 @@ public class EditoraNaoEncontradaException extends EntidadeNaoEncontradaExceptio
 	}
 	
 	public EditoraNaoEncontradaException(Long id) {
-		this(String.format("Não existe um cadastro de editora com código %d", id));
+		this(String.format("Não existe um cadastro de editora com código %d.", id));
 	}
 	
 }
