@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import net.mundomangas.backend.domain.exception.EditoraNaoEncontradaException;
 import net.mundomangas.backend.domain.model.Editora;
 import net.mundomangas.backend.domain.repository.EditoraRepository;
 
@@ -22,11 +23,10 @@ public class CadastroEditoraService {
 		return repository.save(editora);
 	}
 	
-	
-	public Editora buscarOuFalhar(Long Id) {
-		return repository.findById(Id).orElse(null);
+	public Editora buscarOuFalhar(Long id) {
+		return repository.findById(id).orElseThrow(() ->
+		new EditoraNaoEncontradaException(id));
 	}
-
 
 	public List<Editora> findByName(String nome, Integer page, String order) {
 		Pageable pageable = pageableBuilder(page, order);
@@ -41,6 +41,7 @@ public class CadastroEditoraService {
 		return repository.findAll(pageable).toList();
 	}
 
+	@SuppressWarnings("unused")
 	private Pageable pageableBuilder(Integer page, String order) {
 		Sort sort = null;
 		Pageable pageable = null;
