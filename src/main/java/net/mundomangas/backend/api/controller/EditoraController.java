@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.mundomangas.backend.domain.model.Editora;
 import net.mundomangas.backend.domain.repository.EditoraRepository;
+import net.mundomangas.backend.domain.service.CadastroEditoraService;
 
 @RestController
 @RequestMapping("/editoras")
@@ -21,12 +22,19 @@ public class EditoraController {
 	@Autowired
 	private EditoraRepository repository;
 	
-	@GetMapping("/{page}")
+	@Autowired
+	private CadastroEditoraService cadastro;
+	
+	@GetMapping("/pagina/{page}")
 	private List<Editora> listar(@PathVariable Integer page) {
 		Sort sort = Sort.by("nome");
 		Pageable pageable = PageRequest.of(page - 1, 20, sort);
 		return repository.findAll(pageable).toList();
 	}
 	
+	@GetMapping("/{id}")
+	private Editora buscar(@PathVariable Long id) {
+		return cadastro.buscarOuFalhar(id);
+	}
 	
 }

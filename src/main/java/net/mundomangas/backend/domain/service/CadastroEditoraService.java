@@ -1,10 +1,12 @@
-package net.mundomangas.backend.domain;
+package net.mundomangas.backend.domain.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import net.mundomangas.backend.domain.model.Editora;
 import net.mundomangas.backend.domain.repository.EditoraRepository;
 
+@Service
 public class CadastroEditoraService {
 	
 	@Autowired
@@ -14,4 +16,8 @@ public class CadastroEditoraService {
 		return repository.save(editora);
 	}
 	
+	
+	public Editora buscarOuFalhar(Long Id) {
+		return repository.findById(Id).orElse(null);
+	}
 }
