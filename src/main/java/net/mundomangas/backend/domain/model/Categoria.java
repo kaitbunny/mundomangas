@@ -29,8 +29,8 @@ public class Categoria {
 	private String uri_foto;
 	
 	@ManyToMany
-	@JoinTable(name = "categoria_subcategoria",
+	@JoinTable(name = "categoria_categoria_pai",
 			joinColumns = @JoinColumn(name = "categoria_id"),
-			inverseJoinColumns = @JoinColumn(name = "subcategoria_id"))
-	private List<Categoria> categorias = new ArrayList<>();
+			inverseJoinColumns = @JoinColumn(name = "categoria_pai_id"))
+	private List<Categoria> categoriasPai = new ArrayList<>();
 }

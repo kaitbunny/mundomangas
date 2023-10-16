@@ -12,7 +12,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import net.mundomangas.backend.domain.exception.CategoriaNaoEncontradaException;
-import net.mundomangas.backend.domain.exception.EditoraNaoEncontradaException;
 import net.mundomangas.backend.domain.exception.EntidadeEmUsoException;
 import net.mundomangas.backend.domain.model.Categoria;
 import net.mundomangas.backend.domain.repository.CategoriaRepository;
@@ -43,7 +42,7 @@ public class CadastroCategoriaService {
 	
 	public Categoria buscarOuFalhar(Long id) {
 		return repository.findById(id).orElseThrow(() ->
-		new EditoraNaoEncontradaException(id));
+		new CategoriaNaoEncontradaException(id));
 	}
 
 	public List<Categoria> findByName(String nome, Integer page, String order) {
