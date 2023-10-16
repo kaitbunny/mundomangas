@@ -1,4 +1,4 @@
-package net.mundomangas.backend.api.controller;
+package net.mundomangas.backend.api.exceptionhandler;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,8 +19,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 			EntidadeNaoEncontradaException e, WebRequest request) {
 		
 		HttpStatus status = HttpStatus.NOT_FOUND;
+		ProblemType problemType = ProblemType.RECURSO_NAO_ENCONTRADO;
+		String detail = e.getMessage();
 		
-		String problem = e.getMessage();
+		Problem problem = createProblemBuilder(status, problemType, detail).build();
 		
 		return handleExceptionInternal(e, problem, new HttpHeaders(),
 				status, request);
@@ -33,10 +35,30 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		if(body == null) {
 			HttpStatus status = HttpStatus.resolve(statusCode.value());
 			
-			body = status.getReasonPhrase();
+			body = Problem.builder()
+					.title(status.getReasonPhrase())
+					.status(status.value())
+					.build();
+		}
+		else if(body instanceof String) {
+			body = Problem.builder()
+					.title((String) body)
+					.status(statusCode.value())
+					.build();
 		}
 		
 		return super.handleExceptionInternal(e, body, headers, statusCode, request);
+	}
+	
+	private Problem.ProblemBuilder createProblemBuilder(HttpStatus status,
+			ProblemType problemType, String detail) {
+		
+		return Problem.builder()
+				.status(status.value())
+				.type(problemType.getUri())
+				.title(problemType.getTitle())
+				.detail(detail);
+		
 	}
 	
 }
