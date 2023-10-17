@@ -26,7 +26,6 @@ public class Categoria {
 	
 	@Column(nullable = false)
 	private String nome;
-	private String uri_foto;
 	
 	@ManyToMany
 	@JoinTable(name = "categoria_categoria_pai",
