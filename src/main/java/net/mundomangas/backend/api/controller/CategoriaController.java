@@ -46,6 +46,13 @@ public class CategoriaController {
 		return cadastro.findByName(nome, page, order);
 	}
 	
+	@GetMapping("/por-categoria")
+	public List<Categoria> buscarPorCategoria(@RequestParam String nomeCategoria,
+			@RequestParam("page") Integer page) {
+		
+		return cadastro.listarPorCategoriaPai(nomeCategoria, page);
+	}
+	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Categoria adicionar(@RequestBody Categoria categoria) {

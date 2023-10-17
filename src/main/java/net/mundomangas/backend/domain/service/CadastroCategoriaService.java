@@ -1,6 +1,8 @@
 package net.mundomangas.backend.domain.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -57,17 +59,26 @@ public class CadastroCategoriaService {
 		
 		return repository.findAll(pageable).toList();
 	}
+	
+	public List<Categoria> listarPorCategoriaPai(String nomeCategoria, Integer page) {
+		Pageable pageable = PageRequest.of(page - 1, 20);
+		Set<Categoria> categorias = repository.buscarPorCategoriaPai(
+				nomeCategoria, pageable.getPageSize(), pageable.getOffset());
+		List<Categoria> categoriasList = new ArrayList<>(categorias);
+		
+		return categoriasList;
+		}
 
 	@SuppressWarnings("unused")
 	private Pageable pageableBuilder(Integer page, String order) {
 		Sort sort = null;
 		Pageable pageable = null;
 		
-		if(order.equals("asc")) {
+		if(order.equalsIgnoreCase("asc")) {
 			sort = Sort.by("nome").ascending();
 			return pageable = PageRequest.of(page - 1, 20, sort);
 		}
-		else if(order.equals("desc")) {
+		else if(order.equalsIgnoreCase("desc")) {
 			sort = Sort.by("nome").descending();
 			return pageable = PageRequest.of(page - 1, 20, sort);
 		}

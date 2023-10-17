@@ -63,11 +63,11 @@ public class CadastroEditoraService {
 		Sort sort = null;
 		Pageable pageable = null;
 		
-		if(order.equals("asc")) {
+		if(order.equalsIgnoreCase("asc")) {
 			sort = Sort.by("nome").ascending();
 			return pageable = PageRequest.of(page - 1, 20, sort);
 		}
-		else if(order.equals("desc")) {
+		else if(order.equalsIgnoreCase("desc")) {
 			sort = Sort.by("nome").descending();
 			return pageable = PageRequest.of(page - 1, 20, sort);
 		}
