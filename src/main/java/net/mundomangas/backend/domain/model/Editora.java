@@ -20,4 +20,6 @@ public class Editora {
 	
 	@Column(nullable = false)
 	private String nome;
+	
+	private String uriFoto;
 }
