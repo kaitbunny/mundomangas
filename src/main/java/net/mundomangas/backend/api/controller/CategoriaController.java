@@ -30,15 +30,15 @@ public class CategoriaController {
 	public Categoria buscar(@PathVariable Long id) {
 		return cadastro.buscarOuFalhar(id);
 	}
-//	
-//	@GetMapping("/por-nome")
-//	public List<Editora> buscarPorNome(@RequestParam("nome") String nome,
-//										@RequestParam("page") Integer page,
-//										@RequestParam("order") String order) {
-//		
-//		return cadastro.findByName(nome, page, order);
-//	}
-//	
+	
+	@GetMapping("/por-nome")
+	public List<Categoria> buscarPorNome(@RequestParam("nome") String nome,
+										@RequestParam("page") Integer page,
+										@RequestParam("order") String order) {
+		
+		return cadastro.findByName(nome, page, order);
+	}
+	
 //	@PostMapping
 //	@ResponseStatus(HttpStatus.CREATED)
 //	public Editora adicionar(@RequestBody Editora editora) {
