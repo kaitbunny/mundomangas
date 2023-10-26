@@ -18,8 +18,8 @@ import net.mundomangas.backend.domain.repository.CategoriaRepository;
 
 @Service
 public class CadastroCategoriaService {
-	
 	private static final String MSG_CATEGORIA_EM_USO = "Categoria de código %d não pode ser removida, pois está em uso";
+	
 	@Autowired
 	private CategoriaRepository repository;
 	
