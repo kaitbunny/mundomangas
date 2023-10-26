@@ -9,12 +9,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import net.mundomangas.backend.domain.exception.EntidadeEmUsoException;
 import net.mundomangas.backend.domain.exception.ProdutoNaoEncontradoException;
 import net.mundomangas.backend.domain.model.Produto;
 import net.mundomangas.backend.domain.repository.ProdutoRepository;
 
+@Service
 public class CadastroProdutoService {
 	private static final String MSG_PRODUTO_EM_USO = "Produto de código %d não pode ser removido, pois está em uso";
 	
