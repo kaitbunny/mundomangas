@@ -21,7 +21,7 @@ public class CadastroEditoraService {
 	
 	private static final String MSG_EDITORA_EM_USO = "Editora de código %d não pode ser removida, pois está em uso";
 	@Autowired
-	EditoraRepository repository;
+	private EditoraRepository repository;
 	
 	public Editora salvar(Editora editora) {
 		return repository.save(editora);

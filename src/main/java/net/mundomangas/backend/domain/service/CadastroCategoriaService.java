@@ -21,7 +21,7 @@ public class CadastroCategoriaService {
 	
 	private static final String MSG_CATEGORIA_EM_USO = "Categoria de código %d não pode ser removida, pois está em uso";
 	@Autowired
-	CategoriaRepository repository;
+	private CategoriaRepository repository;
 	
 	public Categoria salvar(Categoria categoria) {
 		return repository.save(categoria);
