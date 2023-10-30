@@ -40,6 +40,20 @@ public class ProdutoController {
 		return cadastro.buscarOuFalhar(id);
 	}
 	
+	@GetMapping("/por-nome")
+	public List<Produto> listarPorNome(@RequestParam("nome") String nome,
+								@RequestParam("page") Integer page,
+								@RequestParam("order") String order) {
+		return cadastro.findByName(nome, page, order);
+	}
+	
+	//TODO get nome
+	//TODO get nome da categoria
+	//TODO get ativo
+	//TODO get vendidos
+	//TODO get data lancamento((mais recentes
+	//TODO get preco
+	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Produto adicionar(@RequestBody Produto produto) {
