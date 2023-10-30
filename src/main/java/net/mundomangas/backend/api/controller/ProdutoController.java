@@ -2,11 +2,19 @@ package net.mundomangas.backend.api.controller;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.mundomangas.backend.domain.model.Produto;
@@ -27,13 +35,13 @@ public class ProdutoController {
 		return cadastro.listarPorPagina(page, order);
 	}
 	
-//	@GetMapping("/{id}")
-//	public Editora buscar(@PathVariable Long id) {
-//		return cadastro.buscarOuFalhar(id);
-//	}
-//	
+	@GetMapping("/{id}")
+	public Produto buscar(@PathVariable Long id) {
+		return cadastro.buscarOuFalhar(id);
+	}
+	
 //	@GetMapping("/por-nome")
-//	public List<Editora> buscarPorNome(@RequestParam("nome") String nome,
+//	public List<Produto> buscarPorNome(@RequestParam("nome") String nome,
 //										@RequestParam("page") Integer page,
 //										@RequestParam("order") String order) {
 //		
@@ -42,19 +50,19 @@ public class ProdutoController {
 //	
 //	@PostMapping
 //	@ResponseStatus(HttpStatus.CREATED)
-//	public Editora adicionar(@RequestBody Editora editora) {
-//		return cadastro.salvar(editora);
+//	public Produto adicionar(@RequestBody Produto produto) {
+//		return cadastro.salvar(produto);
 //	}
 //	
 //	@PutMapping("/{id}")
-//	public Editora atualizar(@PathVariable Long id,
-//			@RequestBody Editora editora) {
+//	public Produto atualizar(@PathVariable Long id,
+//			@RequestBody Produto produto) {
 //		
-//		Editora editoraAtual = cadastro.buscarOuFalhar(id);
+//		Produto produtoAtual = cadastro.buscarOuFalhar(id);
 //		
-//		BeanUtils.copyProperties(editora, editoraAtual, "id");
+//		BeanUtils.copyProperties(produto, produtoAtual, "id");
 //		
-//		return cadastro.salvar(editoraAtual);
+//		return cadastro.salvar(produtoAtual);
 //	}
 //	
 //	@DeleteMapping("/{id}")
