@@ -11,7 +11,7 @@ ALTER TABLE categoria AUTO_INCREMENT = 1;
 ALTER TABLE editora AUTO_INCREMENT = 1;
 ALTER TABLE produto AUTO_INCREMENT = 1;
 
-INSERT INTO categoria(nome) VALUES('Marvel'), ('DC'), ('Fantasia'), ('HQ'), ('Manga'), ('Hulk'), ('Batman'), ('Isekai'), ('Konosuba');
+INSERT INTO categoria(nome) VALUES('Marvel'), ('DC'), ('Fantasia'), ('HQ'), ('Manga'), ('Hulk'), ('Batman'), ('Isekai'), ('Konosuba'), ('Ecchi'), ('Gigant');
 
 INSERT INTO editora(nome, uri_foto) VALUES('Marvel Comics', 'https://static.displate.com/1200x857/displate/2023-02-20/26fad5ee3cd356d75cbc659d4b0b85ee_43aedd7741e9a846d17402a5d8c5a5cb.jpg');
 INSERT INTO editora(nome, uri_foto) VALUES('DC Comics', 'https://i.pinimg.com/564x/3d/33/89/3d338995debeff7a573737e8a5b3e826.jpg');
