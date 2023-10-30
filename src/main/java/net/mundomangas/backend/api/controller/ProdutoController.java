@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,9 +57,9 @@ public class ProdutoController {
 		return cadastro.salvar(produtoAtual);
 	}
 	
-//	@DeleteMapping("/{id}")
-//	@ResponseStatus(HttpStatus.NO_CONTENT)
-//	public void deletar(@PathVariable Long id) {
-//		cadastro.excluir(id);
-//	}
+	@DeleteMapping("/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deletar(@PathVariable Long id) {
+		cadastro.excluir(id);
+	}
 }
