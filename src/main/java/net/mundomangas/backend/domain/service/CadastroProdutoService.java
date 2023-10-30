@@ -56,14 +56,14 @@ public class CadastroProdutoService {
 	public List<Produto> findByCategoriaNome(String nome, Integer page, String order) {
 		Pageable pageable = pageableBuilder(page, order);
 		
-		Page<Produto> list = repository.findByCategoriaNome(nome, pageable);
+		Page<Produto> list = repository.findByCategorias_NomeContaining(nome, pageable);
 		return list.toList();
 	}
 	
 	public List<Produto> findByCategoriaId(Integer id, Integer page, String order) {
 		Pageable pageable = pageableBuilder(page, order);
 		
-		Page<Produto> list = repository.findByCategoriaId(id, pageable);
+		Page<Produto> list = repository.findByCategorias_Id(id, pageable);
 		return list.toList();
 	}
 	
@@ -71,6 +71,8 @@ public class CadastroProdutoService {
 		return repository.findById(id).orElseThrow(() ->
 		new ProdutoNaoEncontradoException(id));
 	}
+	
+	//fazer um switch
 	
 	@SuppressWarnings("unused")
 	private Pageable pageableBuilder(Integer page, String order) {

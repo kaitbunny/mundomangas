@@ -54,7 +54,6 @@ public class ProdutoController {
 		return cadastro.findByCategoriaNome(nome, page, order);
 	}
 	
-	//TODO get categoria id
 	@GetMapping("/por-categoria-id")
 	public List<Produto> listarPorCategoria(@RequestParam("id") Integer id,
 											@RequestParam("page") Integer page,
@@ -62,8 +61,9 @@ public class ProdutoController {
 		return cadastro.findByCategoriaId(id, page, order);
 	}
 	
-	//TODO get ativo
 	//TODO get vendidos
+	
+	
 	//TODO get data lancamento((mais recentes
 	//TODO get preco
 	
