@@ -6,7 +6,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
@@ -34,7 +33,6 @@ public class Produto {
 	@Column(nullable = false)
 	private String nome;
 	
-	@JsonIgnore
 	@Column(nullable = false)
 	private Integer paginas;
 	
@@ -56,7 +54,6 @@ public class Produto {
 	@Column(nullable = true)
 	private Boolean ativo;
 	
-	@JsonIgnore
 	@Column(nullable = true)
 	private Boolean colorido;
 	

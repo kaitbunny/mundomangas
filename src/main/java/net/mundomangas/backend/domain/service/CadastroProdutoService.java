@@ -53,6 +53,13 @@ public class CadastroProdutoService {
 		return list.toList();
 	}
 	
+	public List<Produto> findByCategoriaNome(String nome, Integer page, String order) {
+		Pageable pageable = pageableBuilder(page, order);
+		
+		Page<Produto> list = repository.findByCategoriaNome(nome, pageable);
+		return list.toList();
+	}
+	
 	public Produto buscarOuFalhar(Long id) {
 		return repository.findById(id).orElseThrow(() ->
 		new ProdutoNaoEncontradoException(id));
