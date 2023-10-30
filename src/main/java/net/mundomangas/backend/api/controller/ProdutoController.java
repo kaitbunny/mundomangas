@@ -47,8 +47,14 @@ public class ProdutoController {
 		return cadastro.findByName(nome, page, order);
 	}
 	
-	//TODO get nome
 	//TODO get nome da categoria
+	@GetMapping("/por-categoria")
+	public List<Produto> listarPorNomeCategoria(@RequestParam("nome") String nome,
+												@RequestParam("page") Integer page,
+												@RequestParam("order") String order) {
+		return cadastro.findByCategoriaNome(nome, page, order);
+	}
+	
 	//TODO get ativo
 	//TODO get vendidos
 	//TODO get data lancamento((mais recentes

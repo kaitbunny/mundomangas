@@ -13,6 +13,7 @@ import net.mundomangas.backend.domain.model.Produto;
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 	
 	Page<Produto> findByNomeContaining(String nome, Pageable pageable);
+	Page<Produto> findByAtivoTrue(Pageable pageable);
 	
 	@Query("SELECT p FROM Produto p JOIN p.categorias c WHERE c.nome LIKE :nome")
 	Page<Produto> findByCategoriaNome(@Param("nome") String nome, Pageable pageable);
