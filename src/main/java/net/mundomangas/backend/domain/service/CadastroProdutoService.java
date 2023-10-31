@@ -1,7 +1,5 @@
 package net.mundomangas.backend.domain.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -18,6 +16,7 @@ import net.mundomangas.backend.domain.repository.ProdutoRepository;
 
 @Service
 public class CadastroProdutoService {
+	private static final int ITENS_POR_PAGINA = 20;
 	private static final String MSG_PRODUTO_EM_USO = "Produto de código %d não pode ser removido, pois está em uso";
 
 	@Autowired
@@ -43,60 +42,64 @@ public class CadastroProdutoService {
 		Pageable pageable = pageableBuilder(page, order);
 		Page<Produto> result = repository.findAll(pageable);
 		
-		var response = new PaginatedResponseService<>(
-				result.getContent(), result.getTotalPages(),
-				result.getTotalElements(), page);
+		return responseBuilder(result, page);
+	}
+
+	public PaginatedResponseService<Produto> findByName(String nome, Integer page, String order) {
+		Pageable pageable = pageableBuilder(page, order);
+		Page<Produto> result = repository.findByNomeContaining(nome, pageable);
 		
-		return response;
+		return responseBuilder(result, page);
 	}
 
-	public List<Produto> findByName(String nome, Integer page, String order) {
+//	public PaginatedResponseService<Produto> findByCategoriaNome(String nome, Integer page, String order) {
+//		Pageable pageable = pageableBuilder(page, order);
+//		Page<Produto> result = repository.findByCategorias_NomeContaining(nome, pageable);
+//		
+//		return responseBuilder(result, page);
+//	}
+
+	public PaginatedResponseService<Produto> findByCategoriaId(Integer id, Integer page, String order) {
 		Pageable pageable = pageableBuilder(page, order);
-
-		Page<Produto> list = repository.findByNomeContaining(nome, pageable);
-		return list.toList();
-	}
-
-	public List<Produto> findByCategoriaNome(String nome, Integer page, String order) {
-		Pageable pageable = pageableBuilder(page, order);
-
-		Page<Produto> list = repository.findByCategorias_NomeContaining(nome, pageable);
-		return list.toList();
-	}
-
-	public List<Produto> findByCategoriaId(Integer id, Integer page, String order) {
-		Pageable pageable = pageableBuilder(page, order);
-
-		Page<Produto> list = repository.findByCategorias_Id(id, pageable);
-		return list.toList();
+		Page<Produto> result = repository.findByCategorias_Id(id, pageable);
+		
+		return responseBuilder(result, page);
 	}
 
 	public Produto buscarOuFalhar(Long id) {
 		return repository.findById(id).orElseThrow(() -> new ProdutoNaoEncontradoException(id));
 	}
-
+	
+	private PaginatedResponseService<Produto> responseBuilder(Page<Produto> result, Integer page) {
+		return new PaginatedResponseService<>(
+				result.getContent(), result.getTotalPages(),
+				result.getTotalElements(), page);
+	}
+	
 	private Pageable pageableBuilder(Integer page, String order) {
 		 
+		int pageNumber = page - 1;
+		
 		if (order.equalsIgnoreCase("OrderByTopSaleDESC")) {
-			return PageRequest.of(page - 1, 20, Sort.by("totalVendido").descending());
+			return PageRequest.of(pageNumber, ITENS_POR_PAGINA, Sort.by("totalVendido").descending());
 		}
 		else if (order.equalsIgnoreCase("OrderByReleaseDateDESC")) {
-			return PageRequest.of(page - 1, 20, Sort.by("dataPublicacao").descending());
+			return PageRequest.of(pageNumber, ITENS_POR_PAGINA, Sort.by("dataPublicacao").descending());
 		}
 		else if(order.equalsIgnoreCase("OrderByPriceDESC")) {
-			return PageRequest.of(page - 1, 20, Sort.by("preco").descending());
+			return PageRequest.of(pageNumber, ITENS_POR_PAGINA, Sort.by("preco").descending());
 		}
 		else if(order.equalsIgnoreCase("OrderByPriceASC")) {
-			return PageRequest.of(page - 1, 20, Sort.by("preco").ascending());
+			return PageRequest.of(pageNumber, ITENS_POR_PAGINA, Sort.by("preco").ascending());
 		}
 		else if(order.equalsIgnoreCase("OrderByNameASC")) {
-			return PageRequest.of(page - 1, 20, Sort.by("nome").ascending());
+			return PageRequest.of(pageNumber, ITENS_POR_PAGINA, Sort.by("nome").ascending());
 		}
 		else if(order.equalsIgnoreCase("OrderByNameDESC")) {
-			return PageRequest.of(page - 1, 20, Sort.by("nome").descending());
+			return PageRequest.of(pageNumber, ITENS_POR_PAGINA, Sort.by("nome").descending());
 		}
 		else {
-			return PageRequest.of(page - 1, 20);
+			return PageRequest.of(pageNumber, ITENS_POR_PAGINA);
 		}
 	}
 }

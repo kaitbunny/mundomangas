@@ -1,7 +1,5 @@
 package net.mundomangas.backend.api.controller;
 
-import java.util.List;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,21 +40,21 @@ public class ProdutoController {
 	}
 	
 	@GetMapping("/por-nome")
-	public List<Produto> listarPorNome(@RequestParam("nome") String nome,
+	public PaginatedResponseService<Produto> listarPorNome(@RequestParam("nome") String nome,
 								@RequestParam("page") Integer page,
 								@RequestParam("order") String order) {
 		return cadastro.findByName(nome, page, order);
 	}
 	
-	@GetMapping("/por-categoria-nome")
-	public List<Produto> listarPorNomeCategoria(@RequestParam("nome") String nome,
-												@RequestParam("page") Integer page,
-												@RequestParam("order") String order) {
-		return cadastro.findByCategoriaNome(nome, page, order);
-	}
+//	@GetMapping("/por-categoria-nome")
+//	public PaginatedResponseService<Produto> listarPorNomeCategoria(@RequestParam("nome") String nome,
+//												@RequestParam("page") Integer page,
+//												@RequestParam("order") String order) {
+//		return cadastro.findByCategoriaNome(nome, page, order);
+//	}
 	
 	@GetMapping("/por-categoria-id")
-	public List<Produto> listarPorCategoria(@RequestParam("id") Integer id,
+	public PaginatedResponseService<Produto> listarPorCategoria(@RequestParam("id") Integer id,
 											@RequestParam("page") Integer page,
 											@RequestParam("order") String order) {
 		return cadastro.findByCategoriaId(id, page, order);
