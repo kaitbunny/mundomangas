@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.mundomangas.backend.domain.model.Produto;
 import net.mundomangas.backend.domain.service.CadastroProdutoService;
+import net.mundomangas.backend.domain.service.PaginatedResponseService;
 
 @CrossOrigin("*")
 @RestController
@@ -29,7 +30,7 @@ public class ProdutoController {
 	private CadastroProdutoService cadastro;
 	
 	@GetMapping
-	public List<Produto> listar(@RequestParam("page") Integer page,
+	public PaginatedResponseService<Produto> listar(@RequestParam("page") Integer page,
 								 @RequestParam("order") String order) {
 		
 		return cadastro.listarPorPagina(page, order);
@@ -60,12 +61,6 @@ public class ProdutoController {
 											@RequestParam("order") String order) {
 		return cadastro.findByCategoriaId(id, page, order);
 	}
-	
-	//TODO get vendidos
-	
-	
-	//TODO get data lancamento((mais recentes
-	//TODO get preco
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)

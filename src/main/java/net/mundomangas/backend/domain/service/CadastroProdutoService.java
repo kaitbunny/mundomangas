@@ -19,76 +19,84 @@ import net.mundomangas.backend.domain.repository.ProdutoRepository;
 @Service
 public class CadastroProdutoService {
 	private static final String MSG_PRODUTO_EM_USO = "Produto de código %d não pode ser removido, pois está em uso";
-	
+
 	@Autowired
 	private ProdutoRepository repository;
-	
+
 	public Produto salvar(Produto produto) {
 		return repository.save(produto);
 	}
-	
+
 	public void excluir(Long id) {
 		try {
 			repository.deleteById(id);
 		}
-		catch(EmptyResultDataAccessException e) {
+		catch (EmptyResultDataAccessException e) {
 			throw new ProdutoNaoEncontradoException(id);
 		}
-		catch(DataIntegrityViolationException e) {
-			throw new EntidadeEmUsoException(
-					String.format(MSG_PRODUTO_EM_USO, id));
+		catch (DataIntegrityViolationException e) {
+			throw new EntidadeEmUsoException(String.format(MSG_PRODUTO_EM_USO, id));
 		}
 	}
-	
-	public List<Produto> listarPorPagina(Integer page, String order) {
+
+	public PaginatedResponseService<Produto> listarPorPagina(Integer page, String order) {
 		Pageable pageable = pageableBuilder(page, order);
+		Page<Produto> result = repository.findAll(pageable);
 		
-		return repository.findAll(pageable).toList();
+		var response = new PaginatedResponseService<>(
+				result.getContent(), result.getTotalPages(),
+				result.getTotalElements(), page);
+		
+		return response;
 	}
-	
+
 	public List<Produto> findByName(String nome, Integer page, String order) {
 		Pageable pageable = pageableBuilder(page, order);
-		
+
 		Page<Produto> list = repository.findByNomeContaining(nome, pageable);
 		return list.toList();
 	}
-	
+
 	public List<Produto> findByCategoriaNome(String nome, Integer page, String order) {
 		Pageable pageable = pageableBuilder(page, order);
-		
+
 		Page<Produto> list = repository.findByCategorias_NomeContaining(nome, pageable);
 		return list.toList();
 	}
-	
+
 	public List<Produto> findByCategoriaId(Integer id, Integer page, String order) {
 		Pageable pageable = pageableBuilder(page, order);
-		
+
 		Page<Produto> list = repository.findByCategorias_Id(id, pageable);
 		return list.toList();
 	}
-	
+
 	public Produto buscarOuFalhar(Long id) {
-		return repository.findById(id).orElseThrow(() ->
-		new ProdutoNaoEncontradoException(id));
+		return repository.findById(id).orElseThrow(() -> new ProdutoNaoEncontradoException(id));
 	}
-	
-	//fazer um switch
-	
-	@SuppressWarnings("unused")
+
 	private Pageable pageableBuilder(Integer page, String order) {
-		Sort sort = null;
-		Pageable pageable = null;
-		
-		if(order.equalsIgnoreCase("asc")) {
-			sort = Sort.by("nome").ascending();
-			return pageable = PageRequest.of(page - 1, 20, sort);
+		 
+		if (order.equalsIgnoreCase("OrderByTopSaleDESC")) {
+			return PageRequest.of(page - 1, 20, Sort.by("totalVendido").descending());
 		}
-		else if(order.equalsIgnoreCase("desc")) {
-			sort = Sort.by("nome").descending();
-			return pageable = PageRequest.of(page - 1, 20, sort);
+		else if (order.equalsIgnoreCase("OrderByReleaseDateDESC")) {
+			return PageRequest.of(page - 1, 20, Sort.by("dataPublicacao").descending());
+		}
+		else if(order.equalsIgnoreCase("OrderByPriceDESC")) {
+			return PageRequest.of(page - 1, 20, Sort.by("preco").descending());
+		}
+		else if(order.equalsIgnoreCase("OrderByPriceASC")) {
+			return PageRequest.of(page - 1, 20, Sort.by("preco").ascending());
+		}
+		else if(order.equalsIgnoreCase("OrderByNameASC")) {
+			return PageRequest.of(page - 1, 20, Sort.by("nome").ascending());
+		}
+		else if(order.equalsIgnoreCase("OrderByNameDESC")) {
+			return PageRequest.of(page - 1, 20, Sort.by("nome").descending());
 		}
 		else {
-			return pageable = PageRequest.of(page - 1, 20);
+			return PageRequest.of(page - 1, 20);
 		}
 	}
 }
