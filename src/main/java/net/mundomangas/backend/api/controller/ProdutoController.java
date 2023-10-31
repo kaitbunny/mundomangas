@@ -46,13 +46,6 @@ public class ProdutoController {
 		return cadastro.findByName(nome, page, order);
 	}
 	
-//	@GetMapping("/por-categoria-nome")
-//	public PaginatedResponseService<Produto> listarPorNomeCategoria(@RequestParam("nome") String nome,
-//												@RequestParam("page") Integer page,
-//												@RequestParam("order") String order) {
-//		return cadastro.findByCategoriaNome(nome, page, order);
-//	}
-	
 	@GetMapping("/por-categoria-id")
 	public PaginatedResponseService<Produto> listarPorCategoria(@RequestParam("id") Integer id,
 											@RequestParam("page") Integer page,

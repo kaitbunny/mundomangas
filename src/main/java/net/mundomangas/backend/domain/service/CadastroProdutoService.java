@@ -52,13 +52,6 @@ public class CadastroProdutoService {
 		return responseBuilder(result, page);
 	}
 
-//	public PaginatedResponseService<Produto> findByCategoriaNome(String nome, Integer page, String order) {
-//		Pageable pageable = pageableBuilder(page, order);
-//		Page<Produto> result = repository.findByCategorias_NomeContaining(nome, pageable);
-//		
-//		return responseBuilder(result, page);
-//	}
-
 	public PaginatedResponseService<Produto> findByCategoriaId(Integer id, Integer page, String order) {
 		Pageable pageable = pageableBuilder(page, order);
 		Page<Produto> result = repository.findByCategorias_Id(id, pageable);
