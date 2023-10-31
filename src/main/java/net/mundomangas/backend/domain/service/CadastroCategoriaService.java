@@ -1,7 +1,5 @@
 package net.mundomangas.backend.domain.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -18,6 +16,7 @@ import net.mundomangas.backend.domain.repository.CategoriaRepository;
 
 @Service
 public class CadastroCategoriaService {
+	private static final int ITENS_POR_PAGINA = 20;
 	private static final String MSG_CATEGORIA_EM_USO = "Categoria de código %d não pode ser removida, pois está em uso";
 	
 	@Autowired
@@ -44,35 +43,38 @@ public class CadastroCategoriaService {
 		return repository.findById(id).orElseThrow(() ->
 		new CategoriaNaoEncontradaException(id));
 	}
-
-	public List<Categoria> findByName(String nome, Integer page, String order) {
+	
+	public PaginatedResponseService<Categoria> findByName(String nome, Integer page, String order) {
 		Pageable pageable = pageableBuilder(page, order);
+		Page<Categoria> result = repository.findByNomeContaining(nome, pageable);
 		
-		Page<Categoria> list = repository.findByNomeContaining(nome, pageable);
-		return list.toList();
+		return responseBuilder(result, page);
 	}
 
-	public List<Categoria> listarPorPagina(Integer page, String order) {
+	public PaginatedResponseService<Categoria> listarPorPagina(Integer page, String order) {
 		Pageable pageable = pageableBuilder(page, order);
+		Page<Categoria> result = repository.findAll(pageable);
 		
-		return repository.findAll(pageable).toList();
+		return responseBuilder(result, page);
 	}
-
-	@SuppressWarnings("unused")
+	
+	private PaginatedResponseService<Categoria> responseBuilder(Page<Categoria> result, Integer page) {
+		return new PaginatedResponseService<>(
+				result.getContent(), result.getTotalPages(),
+				result.getTotalElements(), page);
+	}
+	
 	private Pageable pageableBuilder(Integer page, String order) {
-		Sort sort = null;
-		Pageable pageable = null;
+		int pageNumber = page - 1;
 		
-		if(order.equalsIgnoreCase("asc")) {
-			sort = Sort.by("nome").ascending();
-			return pageable = PageRequest.of(page - 1, 20, sort);
+		if(order.equalsIgnoreCase("OrderByNameASC")) {
+			return PageRequest.of(pageNumber, ITENS_POR_PAGINA, Sort.by("nome").ascending());
 		}
-		else if(order.equalsIgnoreCase("desc")) {
-			sort = Sort.by("nome").descending();
-			return pageable = PageRequest.of(page - 1, 20, sort);
+		else if(order.equalsIgnoreCase("OrderByNameDESC")) {
+			return PageRequest.of(pageNumber, ITENS_POR_PAGINA, Sort.by("nome").descending());
 		}
 		else {
-			return pageable = PageRequest.of(page - 1, 20);
+			return PageRequest.of(pageNumber, ITENS_POR_PAGINA);
 		}
 	}
 	

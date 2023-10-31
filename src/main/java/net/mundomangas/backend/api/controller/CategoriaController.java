@@ -1,7 +1,5 @@
 package net.mundomangas.backend.api.controller;
 
-import java.util.List;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.mundomangas.backend.domain.model.Categoria;
 import net.mundomangas.backend.domain.service.CadastroCategoriaService;
+import net.mundomangas.backend.domain.service.PaginatedResponseService;
 
 @CrossOrigin("*")
 @RestController
@@ -29,7 +28,7 @@ public class CategoriaController {
 	private CadastroCategoriaService cadastro;
 	
 	@GetMapping
-	public List<Categoria> listar(@RequestParam("page") Integer page,
+	public PaginatedResponseService<Categoria> listar(@RequestParam("page") Integer page,
 								 @RequestParam("order") String order) {
 		
 		return cadastro.listarPorPagina(page, order);
@@ -41,7 +40,7 @@ public class CategoriaController {
 	}
 	
 	@GetMapping("/por-nome")
-	public List<Categoria> buscarPorNome(@RequestParam("nome") String nome,
+	public PaginatedResponseService<Categoria> buscarPorNome(@RequestParam("nome") String nome,
 										@RequestParam("page") Integer page,
 										@RequestParam("order") String order) {
 		
