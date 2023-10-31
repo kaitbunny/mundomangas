@@ -39,16 +39,16 @@ public class CadastroCategoriaService {
 		}
 	}
 	
-	public Categoria buscarOuFalhar(Long id) {
-		return repository.findById(id).orElseThrow(() ->
-		new CategoriaNaoEncontradaException(id));
-	}
-	
 	public PaginatedResponseService<Categoria> findByName(String nome, Integer page, String order) {
 		Pageable pageable = pageableBuilder(page, order);
 		Page<Categoria> result = repository.findByNomeContaining(nome, pageable);
 		
 		return responseBuilder(result, page);
+	}
+	
+	public Categoria buscarOuFalhar(Long id) {
+		return repository.findById(id).orElseThrow(() ->
+		new CategoriaNaoEncontradaException(id));
 	}
 
 	public PaginatedResponseService<Categoria> listarPorPagina(Integer page, String order) {
