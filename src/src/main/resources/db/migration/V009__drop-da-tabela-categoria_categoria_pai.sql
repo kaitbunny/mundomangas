@@ -1,0 +1,1 @@
+DROP TABLE categoria_categoria_pai;
