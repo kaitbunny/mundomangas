@@ -23,7 +23,6 @@ public class SecurityConfigurations {
 	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-		System.out.println("SecurityFilterChain");
 		return httpSecurity
 				.csrf(csrf -> csrf.disable())
 				.sessionManagement(session ->
@@ -41,13 +40,11 @@ public class SecurityConfigurations {
 	
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-		System.out.println("AuthenticationManager");
 		return authenticationConfiguration.getAuthenticationManager();
 	}
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		System.out.println("PasswordEncoder");
 		return new BCryptPasswordEncoder();
 	}
 }

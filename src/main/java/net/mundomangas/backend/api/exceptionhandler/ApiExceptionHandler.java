@@ -20,8 +20,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 
+import net.mundomangas.backend.domain.exception.AtributoDeCadastroInvalidoException;
 import net.mundomangas.backend.domain.exception.EntidadeEmUsoException;
 import net.mundomangas.backend.domain.exception.EntidadeNaoEncontradaException;
+import net.mundomangas.backend.domain.exception.UsuarioJaCadastradoException;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
@@ -160,6 +162,34 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		HttpStatus status = HttpStatus.CONFLICT;
 		ProblemType problemType = ProblemType.ENTIDADE_EM_USO;
+		String detail = e.getMessage();
+		
+		Problem problem = createProblemBuilder(status, problemType, detail).build();
+		
+		return handleExceptionInternal(e, problem, new HttpHeaders(),
+				status, request);
+	}
+	
+	@ExceptionHandler(UsuarioJaCadastradoException.class)
+	public ResponseEntity<?> handleUsuarioJaCadastradoException(
+			UsuarioJaCadastradoException e, WebRequest request) {
+		
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		ProblemType problemType = ProblemType.AUTENTICACAO_INVALIDA;
+		String detail = e.getMessage();
+		
+		Problem problem = createProblemBuilder(status, problemType, detail).build();
+		
+		return handleExceptionInternal(e, problem, new HttpHeaders(),
+				status, request);
+	}
+	
+	@ExceptionHandler(AtributoDeCadastroInvalidoException.class)
+	public ResponseEntity<?> handleAtributoDeCadastroInvalidoException(
+			AtributoDeCadastroInvalidoException e, WebRequest request) {
+		
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		ProblemType problemType = ProblemType.AUTENTICACAO_INVALIDA;
 		String detail = e.getMessage();
 		
 		Problem problem = createProblemBuilder(status, problemType, detail).build();

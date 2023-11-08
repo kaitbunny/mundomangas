@@ -4,12 +4,14 @@ DELETE FROM categoria;
 DELETE FROM editora;
 DELETE FROM produto_categoria;
 DELETE FROM produto;
+DELETE FROM usuario;
 
 SET foreign_key_checks = 1;
 
 ALTER TABLE categoria AUTO_INCREMENT = 1;
 ALTER TABLE editora AUTO_INCREMENT = 1;
 ALTER TABLE produto AUTO_INCREMENT = 1;
+ALTER TABLE usuario AUTO_INCREMENT = 1;
 
 INSERT INTO categoria(nome) VALUES('Marvel'), ('DC'), ('Fantasia'), ('HQ'), ('Manga'), ('Hulk'), ('Batman'), ('Isekai'), ('Konosuba'), ('Ecchi'), ('Gigant');
 
@@ -22,5 +24,7 @@ INSERT INTO produto(nome, paginas, uri_foto, data_publicacao, preco, estoque, to
 INSERT INTO produto(nome, paginas, uri_foto, data_publicacao, preco, estoque, total_vendido, ativo, colorido, editora_id) VALUES('Hulk # 070', 68, 'https://rika.vtexassets.com/arquivos/ids/239904-800-auto?v=635316700301670000&width=800&height=auto&aspect=true', '1989-04-01', 10.50, 7, 12, 1, 1, 4);
 INSERT INTO produto(nome, paginas, uri_foto, data_publicacao, preco, estoque, total_vendido, ativo, colorido, editora_id) VALUES('Batman - 5ª Série # 44', 100, 'https://rika.vtexassets.com/arquivos/ids/236448-800-auto?v=635316655292030000&width=800&height=auto&aspect=true', '2000-06-01', 7.50, 23, 21, 1, 1, 4);
 
-
 INSERT INTO produto_categoria(produto_id, categoria_id) VALUES(1, 5), (1, 3), (2, 1), (2, 4), (2, 6), (3, 2), (3, 4), (3, 7);
+
+INSERT INTO usuario(nome, sobrenome, data_nascimento, cpf, email, senha, permissao) VALUES('admin', 'mundomangas', '2000-01-01', '00000000000', 'admin@mundomangas.com', '$2a$10$0jdH8i8TQOgCKCOKWpT.SeKSMyfT2jjGgKzU2NubchuuNn6dJx6T2', 'ADMIN');
+INSERT INTO usuario(nome, sobrenome, data_nascimento, cpf, email, senha, permissao) VALUES('user', 'mundomangas', '2000-01-01', '11111111111', 'user@mundomangas.com', '$2a$10$uJOU5modsHDpJOZQZOym4ugyDzZ.3QhjiI2.rOdatcSVxZOBfbddy', 'USER');
