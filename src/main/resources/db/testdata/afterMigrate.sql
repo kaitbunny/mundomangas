@@ -5,6 +5,7 @@ DELETE FROM editora;
 DELETE FROM produto_categoria;
 DELETE FROM produto;
 DELETE FROM usuario;
+DELETE FROM carrinho;
 
 SET foreign_key_checks = 1;
 
@@ -12,6 +13,7 @@ ALTER TABLE categoria AUTO_INCREMENT = 1;
 ALTER TABLE editora AUTO_INCREMENT = 1;
 ALTER TABLE produto AUTO_INCREMENT = 1;
 ALTER TABLE usuario AUTO_INCREMENT = 1;
+ALTER TABLE carrinho AUTO_INCREMENT = 1;
 
 INSERT INTO categoria(nome) VALUES('Marvel'), ('DC'), ('Fantasia'), ('HQ'), ('Manga'), ('Hulk'), ('Batman'), ('Isekai'), ('Konosuba'), ('Ecchi'), ('Gigant');
 
@@ -28,3 +30,5 @@ INSERT INTO produto_categoria(produto_id, categoria_id) VALUES(1, 5), (1, 3), (2
 
 INSERT INTO usuario(nome, sobrenome, data_nascimento, cpf, email, senha, permissao) VALUES('admin', 'mundomangas', '2000-01-01', '00000000000', 'admin@mundomangas.com', '$2a$10$0jdH8i8TQOgCKCOKWpT.SeKSMyfT2jjGgKzU2NubchuuNn6dJx6T2', 'ADMIN');
 INSERT INTO usuario(nome, sobrenome, data_nascimento, cpf, email, senha, permissao) VALUES('user', 'mundomangas', '2000-01-01', '11111111111', 'user@mundomangas.com', '$2a$10$uJOU5modsHDpJOZQZOym4ugyDzZ.3QhjiI2.rOdatcSVxZOBfbddy', 'USER');
+
+INSERT INTO carrinho(produto_id, usuario_id, data_criacao, quantidade) VALUES(1, 2, CURDATE(), 10);

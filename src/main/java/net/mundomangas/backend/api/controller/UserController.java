@@ -20,7 +20,7 @@ public class UserController {
 	
 	@GetMapping
 	public UserDTO exibir(Authentication authentication) {
-		return cadastro.findUsuario(authentication);
+		return cadastro.findUsuarioDTO(authentication);
 	}
 	
 }
