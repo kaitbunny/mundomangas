@@ -9,6 +9,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -27,6 +29,7 @@ import net.mundomangas.backend.domain.exception.EmailInvalidoException;
 public class Usuario implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
+	@JsonIgnore
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +38,7 @@ public class Usuario implements UserDetails {
 	@Column(nullable = false)
 	private String email;
 
+	@JsonIgnore
 	@Column(nullable = false)
 	private String senha;
 
@@ -50,9 +54,11 @@ public class Usuario implements UserDetails {
 	@Column(nullable = false)
 	private String cpf;
 
+	@JsonIgnore
 	@Enumerated(EnumType.STRING)
 	private PermissaoDeUsuario permissao;
 
+	@JsonIgnore
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		if (this.permissao == PermissaoDeUsuario.ADMIN) {

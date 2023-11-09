@@ -42,7 +42,6 @@ public class AuthenticationController {
 		
 		var token = tokenService.generateToken((Usuario) auth.getPrincipal());
 		
-		System.out.println("Login" + auth.getPrincipal());
 		return ResponseEntity.ok(new LoginResponseDTO(token));
 	}
 	
