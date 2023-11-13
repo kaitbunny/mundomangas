@@ -25,6 +25,7 @@ import net.mundomangas.backend.domain.exception.EntidadeEmUsoException;
 import net.mundomangas.backend.domain.exception.EntidadeNaoEncontradaException;
 import net.mundomangas.backend.domain.exception.QuantidadeInvalidaException;
 import net.mundomangas.backend.domain.exception.UsuarioJaCadastradoException;
+import net.mundomangas.backend.domain.exception.UsuarioNaoExisteException;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
@@ -176,6 +177,20 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 			UsuarioJaCadastradoException e, WebRequest request) {
 		
 		HttpStatus status = HttpStatus.BAD_REQUEST;
+		ProblemType problemType = ProblemType.AUTENTICACAO_INVALIDA;
+		String detail = e.getMessage();
+		
+		Problem problem = createProblemBuilder(status, problemType, detail).build();
+		
+		return handleExceptionInternal(e, problem, new HttpHeaders(),
+				status, request);
+	}
+	
+	@ExceptionHandler(UsuarioNaoExisteException.class)
+	public ResponseEntity<?> handleUsuarioNaoExisteException(
+			UsuarioNaoExisteException e, WebRequest request) {
+		
+		HttpStatus status = HttpStatus.NOT_FOUND;
 		ProblemType problemType = ProblemType.AUTENTICACAO_INVALIDA;
 		String detail = e.getMessage();
 		

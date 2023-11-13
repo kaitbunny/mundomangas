@@ -7,12 +7,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.mundomangas.backend.domain.dto.AdicionarItemDTO;
+import net.mundomangas.backend.domain.dto.AtualizarItemDTO;
 import net.mundomangas.backend.domain.service.CadastroCarrinhoService;
 
 @CrossOrigin("*")
@@ -32,6 +34,13 @@ public class CarrinhoController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deletar(@PathVariable Long id, Authentication authentication) {
 		cadastro.deletar(id, authentication);
+	}
+	
+	@PutMapping("/{id}")
+	public void atualizar(@PathVariable Long id,
+				@RequestBody AtualizarItemDTO quantidade, Authentication authentication) {
+		
+		cadastro.atualizar(id, quantidade, authentication);
 	}
 	
 }

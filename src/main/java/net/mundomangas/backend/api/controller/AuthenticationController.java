@@ -16,6 +16,7 @@ import net.mundomangas.backend.domain.dto.AuthenticationDTO;
 import net.mundomangas.backend.domain.dto.LoginResponseDTO;
 import net.mundomangas.backend.domain.dto.UserRegisterDTO;
 import net.mundomangas.backend.domain.exception.UsuarioJaCadastradoException;
+import net.mundomangas.backend.domain.exception.UsuarioNaoExisteException;
 import net.mundomangas.backend.domain.model.PermissaoDeUsuario;
 import net.mundomangas.backend.domain.model.Usuario;
 import net.mundomangas.backend.domain.repository.UsuarioRepository;
@@ -37,6 +38,10 @@ public class AuthenticationController {
 	
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody AuthenticationDTO data) {
+		if(this.repository.findByEmail(data.email()) == null) {
+			throw new UsuarioNaoExisteException("Não existe um cadastro de usuário com o email: " + data.email());
+		}
+		
 		var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.senha());
 		var auth = this.authenticationManager.authenticate(usernamePassword);
 		
