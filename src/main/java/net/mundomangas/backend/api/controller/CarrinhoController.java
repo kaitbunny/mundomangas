@@ -1,11 +1,15 @@
 package net.mundomangas.backend.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.mundomangas.backend.domain.dto.AdicionarItemDTO;
@@ -22,6 +26,12 @@ public class CarrinhoController {
 	@PostMapping
 	public void adicionar(@RequestBody AdicionarItemDTO item, Authentication authentication) {
 		cadastro.adicionarItem(item, authentication);
+	}
+	
+	@DeleteMapping("/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deletar(@PathVariable Long id, Authentication authentication) {
+		cadastro.deletar(id, authentication);
 	}
 	
 }

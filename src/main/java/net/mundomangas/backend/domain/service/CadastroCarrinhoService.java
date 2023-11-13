@@ -4,10 +4,12 @@ import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import net.mundomangas.backend.domain.dto.AdicionarItemDTO;
+import net.mundomangas.backend.domain.exception.CarrinhoNaoEncontradoException;
 import net.mundomangas.backend.domain.exception.EntidadeEmUsoException;
 import net.mundomangas.backend.domain.exception.QuantidadeInvalidaException;
 import net.mundomangas.backend.domain.model.Carrinho;
@@ -19,7 +21,7 @@ import net.mundomangas.backend.domain.repository.CarrinhoRepository;
 public class CadastroCarrinhoService {
 
 	@Autowired
-	CarrinhoRepository carrinhoRepository;
+	CarrinhoRepository repository;
 	
 	@Autowired
 	UsuarioService usuarioService;
@@ -47,11 +49,30 @@ public class CadastroCarrinhoService {
 			carrinho.setQuantidade(quantidade);
 			carrinho.setDataCriacao(dataCriacao);
 			
-			carrinhoRepository.save(carrinho);
+			repository.save(carrinho);
 		}
 		catch(DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
 					String.format("O produto '%s' já está no seu carrinho!", produto.getNome()));
 		}
+	}
+
+	public void deletar(Long id, Authentication authentication) {
+		try {
+			var carrinho = buscarOuFalhar(id);
+			var usuario = usuarioService.findUsuario(authentication);
+			if(!carrinho.getUsuario().equals(usuario)) {
+				throw new CarrinhoNaoEncontradoException("Esse carrinho não pertence ao seu usuario");
+			}
+			
+			repository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new CarrinhoNaoEncontradoException(id);
+		}
+	}
+	
+	public Carrinho buscarOuFalhar(Long id) {
+		return repository.findById(id).orElseThrow(() ->
+		new CarrinhoNaoEncontradoException(id));
 	}
 }
