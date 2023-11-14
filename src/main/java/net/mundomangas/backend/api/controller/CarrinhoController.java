@@ -17,9 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.mundomangas.backend.domain.dto.AdicionarItemDTO;
 import net.mundomangas.backend.domain.dto.AtualizarItemDTO;
-import net.mundomangas.backend.domain.model.Produto;
+import net.mundomangas.backend.domain.dto.ListarCarrinhoDTO;
 import net.mundomangas.backend.domain.service.CadastroCarrinhoService;
-import net.mundomangas.backend.domain.service.PaginatedResponseService;
 
 @CrossOrigin("*")
 @RestController
@@ -30,7 +29,7 @@ public class CarrinhoController {
 	private CadastroCarrinhoService cadastro;
 	
 	@GetMapping
-	public PaginatedResponseService<Produto> listar(@RequestParam("page") Integer page, Authentication authentication) {
+	public ListarCarrinhoDTO listar(@RequestParam("page") Integer page, Authentication authentication) {
 		
 		return cadastro.listarPorPagina(page, authentication);
 	}

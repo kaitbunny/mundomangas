@@ -1,5 +1,6 @@
 package net.mundomangas.backend.domain.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import org.springframework.beans.BeanUtils;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import net.mundomangas.backend.domain.dto.AdicionarItemDTO;
 import net.mundomangas.backend.domain.dto.AtualizarItemDTO;
+import net.mundomangas.backend.domain.dto.ItemCarrinhoDTO;
+import net.mundomangas.backend.domain.dto.ListarCarrinhoDTO;
 import net.mundomangas.backend.domain.exception.CarrinhoNaoEncontradoException;
 import net.mundomangas.backend.domain.exception.EntidadeEmUsoException;
 import net.mundomangas.backend.domain.exception.QuantidadeInvalidaException;
@@ -110,19 +113,24 @@ public class CadastroCarrinhoService {
 		repository.save(carrinhoAtual);
 	}
 	
-	public PaginatedResponseService<Produto> listarPorPagina(Integer page, Authentication authentication) {
+	public ListarCarrinhoDTO listarPorPagina(Integer page, Authentication authentication) {
 		var usuario = usuarioService.findUsuario(authentication);
-		
 		Pageable pageable = pageableBuilder(page);
+		
 		Page<Carrinho> carrinho = repository.findByUsuario_Id(usuario.getId(), pageable);
-		Page<Produto> result = carrinho.map(p -> p.getProduto());
+		
+		Page<ItemCarrinhoDTO> result = carrinho.map(p -> new ItemCarrinhoDTO(p.getProduto(), p.getQuantidade(), p.getSubtotal()));
 
 		return responseBuilder(result, page);
 	}
 	
-	private PaginatedResponseService<Produto> responseBuilder(Page<Produto> result, Integer page) {
-		return new PaginatedResponseService<>(result.getContent(), result.getTotalPages(), result.getTotalElements(),
-				page);
+	private ListarCarrinhoDTO responseBuilder(Page<ItemCarrinhoDTO> result, Integer page) {
+		BigDecimal total = result.stream()
+									.map(ItemCarrinhoDTO::subtotal)
+									.reduce(BigDecimal.ZERO, BigDecimal::add);
+		
+		return new ListarCarrinhoDTO(result.getContent(), result.getTotalPages(), result.getTotalElements(),
+				page, total);
 	}
 	
 	private Pageable pageableBuilder(Integer page) {
