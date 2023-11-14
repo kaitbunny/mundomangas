@@ -6,6 +6,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +25,9 @@ import net.mundomangas.backend.domain.repository.CarrinhoRepository;
 
 @Service
 public class CadastroCarrinhoService {
-
+	
+	private static final int ITENS_POR_PAGINA = 20;
+	
 	@Autowired
 	CarrinhoRepository repository;
 
@@ -30,7 +36,7 @@ public class CadastroCarrinhoService {
 
 	@Autowired
 	CadastroProdutoService produtoService;
-
+	
 	public void adicionarItem(AdicionarItemDTO item, Authentication authentication) {
 		Produto produto = produtoService.buscarOuFalhar(item.id());
 
@@ -102,5 +108,28 @@ public class CadastroCarrinhoService {
 		BeanUtils.copyProperties(carrinho, carrinhoAtual, "id");
 		
 		repository.save(carrinhoAtual);
+	}
+	
+	public PaginatedResponseService<Produto> listarPorPagina(Integer page, Authentication authentication) {
+		var usuario = usuarioService.findUsuario(authentication);
+		
+		Pageable pageable = pageableBuilder(page);
+		Page<Carrinho> carrinho = repository.findByUsuario_Id(usuario.getId(), pageable);
+		Page<Produto> result = carrinho.map(p -> p.getProduto());
+
+		return responseBuilder(result, page);
+	}
+	
+	private PaginatedResponseService<Produto> responseBuilder(Page<Produto> result, Integer page) {
+		return new PaginatedResponseService<>(result.getContent(), result.getTotalPages(), result.getTotalElements(),
+				page);
+	}
+	
+	private Pageable pageableBuilder(Integer page) {
+
+		int pageNumber = page - 1;
+
+		return PageRequest.of(pageNumber, ITENS_POR_PAGINA, Sort.by("dataCriacao").descending());
+		
 	}
 }
