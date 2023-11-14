@@ -126,6 +126,7 @@ public class CadastroCarrinhoService {
 	
 	private ListarCarrinhoDTO responseBuilder(Page<ItemCarrinhoDTO> result, Integer page) {
 		BigDecimal total = result.stream()
+									.filter(ItemCarrinhoDTO::ativo)
 									.map(ItemCarrinhoDTO::subtotal)
 									.reduce(BigDecimal.ZERO, BigDecimal::add);
 		
