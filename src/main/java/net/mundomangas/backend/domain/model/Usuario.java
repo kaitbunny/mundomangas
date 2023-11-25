@@ -35,7 +35,7 @@ public class Usuario implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String email;
 
 	@JsonIgnore
@@ -51,7 +51,7 @@ public class Usuario implements UserDetails {
 	@Column(nullable = false)
 	private LocalDate dataNascimento;
 
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String cpf;
 
 	@JsonIgnore
