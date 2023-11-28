@@ -1,7 +1,6 @@
 package net.mundomangas.backend.domain.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,21 +9,19 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import net.mundomangas.backend.domain.exception.AtributoDeEnderecoNaoEncontradoException;
-import net.mundomangas.backend.domain.exception.EntidadeEmUsoException;
-import net.mundomangas.backend.domain.model.Logradouro;
-import net.mundomangas.backend.domain.repository.LogradouroRepository;
+import net.mundomangas.backend.domain.model.UsuarioEndereco;
+import net.mundomangas.backend.domain.repository.UsuarioEnderecoRepository;
 
 @Service
-public class LogradouroService {
-	private static final String ENTIDADE = "logradouro";
+public class CadastroUsuarioEnderecoService {
+	private static final String ENTIDADE = "endereco de usuario";
 	private static final int ITENS_POR_PAGINA = 20;
-	private static final String MSG_BAIRRO_EM_USO = "Logradouro de código %d não pode ser removido, pois está em uso";
 	
 	@Autowired
-	private LogradouroRepository repository;
+	private UsuarioEnderecoRepository repository;
 	
-	public Logradouro salvar(Logradouro logradouro) {
-		return repository.save(logradouro);
+	public UsuarioEndereco salvar(UsuarioEndereco usuarioEndereco) {
+		return repository.save(usuarioEndereco);
 	}
 	
 	public void excluir(Long id) {
@@ -34,25 +31,21 @@ public class LogradouroService {
 		catch(EmptyResultDataAccessException e) {
 			throw new AtributoDeEnderecoNaoEncontradoException(ENTIDADE, id);
 		}
-		catch(DataIntegrityViolationException e) {
-			throw new EntidadeEmUsoException(
-					String.format(MSG_BAIRRO_EM_USO, id));
-		}
 	}
 
-	public PaginatedResponseService<Logradouro> listarPorPagina(Integer page, String order) {
+	public PaginatedResponseService<UsuarioEndereco> listarPorPagina(Integer page, String order) {
 		Pageable pageable = pageableBuilder(page, order);
-		Page<Logradouro> result = repository.findAll(pageable);
+		Page<UsuarioEndereco> result = repository.findAll(pageable);
 		
 		return responseBuilder(result, page);
 	}
 	
-	public Logradouro buscarOuFalhar(Long id) {
+	public UsuarioEndereco buscarOuFalhar(Long id) {
 		return repository.findById(id).orElseThrow(() ->
 		new AtributoDeEnderecoNaoEncontradoException(ENTIDADE, id));
 	}
 	
-	private PaginatedResponseService<Logradouro> responseBuilder(Page<Logradouro> result, Integer page) {
+	private PaginatedResponseService<UsuarioEndereco> responseBuilder(Page<UsuarioEndereco> result, Integer page) {
 		return new PaginatedResponseService<>(
 				result.getContent(), result.getTotalPages(),
 				result.getTotalElements(), page);

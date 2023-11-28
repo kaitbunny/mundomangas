@@ -11,20 +11,20 @@ import org.springframework.stereotype.Service;
 
 import net.mundomangas.backend.domain.exception.AtributoDeEnderecoNaoEncontradoException;
 import net.mundomangas.backend.domain.exception.EntidadeEmUsoException;
-import net.mundomangas.backend.domain.model.Cidade;
-import net.mundomangas.backend.domain.repository.CidadeRepository;
+import net.mundomangas.backend.domain.model.Logradouro;
+import net.mundomangas.backend.domain.repository.LogradouroRepository;
 
 @Service
-public class CidadeService {
-	private static final String ENTIDADE = "cidade";
+public class CadastroLogradouroService {
+	private static final String ENTIDADE = "logradouro";
 	private static final int ITENS_POR_PAGINA = 20;
-	private static final String MSG_CIDADE_EM_USO = "Cidade de código %d não pode ser removida, pois está em uso";
+	private static final String MSG_BAIRRO_EM_USO = "Logradouro de código %d não pode ser removido, pois está em uso";
 	
 	@Autowired
-	private CidadeRepository repository;
+	private LogradouroRepository repository;
 	
-	public Cidade salvar(Cidade cidade) {
-		return repository.save(cidade);
+	public Logradouro salvar(Logradouro logradouro) {
+		return repository.save(logradouro);
 	}
 	
 	public void excluir(Long id) {
@@ -36,23 +36,23 @@ public class CidadeService {
 		}
 		catch(DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
-					String.format(MSG_CIDADE_EM_USO, id));
+					String.format(MSG_BAIRRO_EM_USO, id));
 		}
 	}
 
-	public PaginatedResponseService<Cidade> listarPorPagina(Integer page, String order) {
+	public PaginatedResponseService<Logradouro> listarPorPagina(Integer page, String order) {
 		Pageable pageable = pageableBuilder(page, order);
-		Page<Cidade> result = repository.findAll(pageable);
+		Page<Logradouro> result = repository.findAll(pageable);
 		
 		return responseBuilder(result, page);
 	}
 	
-	public Cidade buscarOuFalhar(Long id) {
+	public Logradouro buscarOuFalhar(Long id) {
 		return repository.findById(id).orElseThrow(() ->
 		new AtributoDeEnderecoNaoEncontradoException(ENTIDADE, id));
 	}
 	
-	private PaginatedResponseService<Cidade> responseBuilder(Page<Cidade> result, Integer page) {
+	private PaginatedResponseService<Logradouro> responseBuilder(Page<Logradouro> result, Integer page) {
 		return new PaginatedResponseService<>(
 				result.getContent(), result.getTotalPages(),
 				result.getTotalElements(), page);

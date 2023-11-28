@@ -13,6 +13,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import net.mundomangas.backend.domain.exception.UsuarioNaoExisteException;
 import net.mundomangas.backend.domain.repository.UsuarioRepository;
 import net.mundomangas.backend.domain.service.TokenService;
 
@@ -33,6 +34,10 @@ public class SecurityFilter extends OncePerRequestFilter {
 		if(token != null) {
 			var login = tokenService.validateToken(token);
 			UserDetails user = usuarioRepository.findByEmail(login);
+			
+			if(user == null) {
+				throw new UsuarioNaoExisteException("Por favor, faça login!");
+			}
 			
 			var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(authentication);

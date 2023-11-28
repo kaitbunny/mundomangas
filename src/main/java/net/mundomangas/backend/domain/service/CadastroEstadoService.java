@@ -11,20 +11,20 @@ import org.springframework.stereotype.Service;
 
 import net.mundomangas.backend.domain.exception.AtributoDeEnderecoNaoEncontradoException;
 import net.mundomangas.backend.domain.exception.EntidadeEmUsoException;
-import net.mundomangas.backend.domain.model.Bairro;
-import net.mundomangas.backend.domain.repository.BairroRepository;
+import net.mundomangas.backend.domain.model.Estado;
+import net.mundomangas.backend.domain.repository.EstadoRepository;
 
 @Service
-public class BairroService {
-	private static final String ENTIDADE = "bairro";
+public class CadastroEstadoService {
+	private static final String ENTIDADE = "estado";
 	private static final int ITENS_POR_PAGINA = 20;
-	private static final String MSG_BAIRRO_EM_USO = "Bairro de código %d não pode ser removido, pois está em uso";
+	private static final String MSG_ESTADO_EM_USO = "Estado de código %d não pode ser removido, pois está em uso";
 	
 	@Autowired
-	private BairroRepository repository;
+	private EstadoRepository repository;
 	
-	public Bairro salvar(Bairro bairro) {
-		return repository.save(bairro);
+	public Estado salvar(Estado estado) {
+		return repository.save(estado);
 	}
 	
 	public void excluir(Long id) {
@@ -36,23 +36,23 @@ public class BairroService {
 		}
 		catch(DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
-					String.format(MSG_BAIRRO_EM_USO, id));
+					String.format(MSG_ESTADO_EM_USO, id));
 		}
 	}
 
-	public PaginatedResponseService<Bairro> listarPorPagina(Integer page, String order) {
+	public PaginatedResponseService<Estado> listarPorPagina(Integer page, String order) {
 		Pageable pageable = pageableBuilder(page, order);
-		Page<Bairro> result = repository.findAll(pageable);
+		Page<Estado> result = repository.findAll(pageable);
 		
 		return responseBuilder(result, page);
 	}
 	
-	public Bairro buscarOuFalhar(Long id) {
+	public Estado buscarOuFalhar(Long id) {
 		return repository.findById(id).orElseThrow(() ->
 		new AtributoDeEnderecoNaoEncontradoException(ENTIDADE, id));
 	}
 	
-	private PaginatedResponseService<Bairro> responseBuilder(Page<Bairro> result, Integer page) {
+	private PaginatedResponseService<Estado> responseBuilder(Page<Estado> result, Integer page) {
 		return new PaginatedResponseService<>(
 				result.getContent(), result.getTotalPages(),
 				result.getTotalElements(), page);
