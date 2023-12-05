@@ -47,6 +47,10 @@ public class CadastroCidadeService {
 		return responseBuilder(result, page);
 	}
 	
+	public Cidade buscarPorNome(String nome, Long estadoId) {
+		return repository.findByNomeAndEstado_Id(nome, estadoId).orElse(null);
+	}
+	
 	public Cidade buscarOuFalhar(Long id) {
 		return repository.findById(id).orElseThrow(() ->
 		new AtributoDeEnderecoNaoEncontradoException(ENTIDADE, id));

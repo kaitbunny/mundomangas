@@ -51,5 +51,4 @@ public class CarrinhoController {
 		
 		cadastro.atualizar(id, quantidade, authentication);
 	}
-	
 }

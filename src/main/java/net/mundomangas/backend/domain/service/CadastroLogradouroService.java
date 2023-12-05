@@ -47,6 +47,10 @@ public class CadastroLogradouroService {
 		return responseBuilder(result, page);
 	}
 	
+	public Logradouro buscarPorCep(String cep) {
+		return repository.findByCep(cep).orElse(null);
+	}
+	
 	public Logradouro buscarOuFalhar(Long id) {
 		return repository.findById(id).orElseThrow(() ->
 		new AtributoDeEnderecoNaoEncontradoException(ENTIDADE, id));

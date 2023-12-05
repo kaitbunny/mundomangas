@@ -71,4 +71,8 @@ public class CadastroBairroService {
 			return PageRequest.of(pageNumber, ITENS_POR_PAGINA);
 		}
 	}
+
+	public Bairro buscarPorNome(String bairro, Long id) {
+		return repository.findByNomeAndCidade_Id(bairro, id).orElse(null);
+	}
 }

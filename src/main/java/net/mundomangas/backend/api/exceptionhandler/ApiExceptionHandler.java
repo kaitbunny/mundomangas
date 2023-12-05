@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 
 import net.mundomangas.backend.domain.exception.AtributoDeCadastroInvalidoException;
+import net.mundomangas.backend.domain.exception.CepInvalidoException;
 import net.mundomangas.backend.domain.exception.EntidadeEmUsoException;
 import net.mundomangas.backend.domain.exception.EntidadeNaoEncontradaException;
 import net.mundomangas.backend.domain.exception.QuantidadeInvalidaException;
@@ -206,6 +207,20 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		ProblemType problemType = ProblemType.AUTENTICACAO_INVALIDA;
+		String detail = e.getMessage();
+		
+		Problem problem = createProblemBuilder(status, problemType, detail).build();
+		
+		return handleExceptionInternal(e, problem, new HttpHeaders(),
+				status, request);
+	}
+	
+	@ExceptionHandler(CepInvalidoException.class)
+	public ResponseEntity<?> handleCepInvalidoException(
+			CepInvalidoException e, WebRequest request) {
+		
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		ProblemType problemType = ProblemType.PARAMETRO_INVALIDO;
 		String detail = e.getMessage();
 		
 		Problem problem = createProblemBuilder(status, problemType, detail).build();
