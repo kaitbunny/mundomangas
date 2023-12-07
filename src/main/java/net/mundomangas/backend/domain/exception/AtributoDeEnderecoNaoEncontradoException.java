@@ -7,8 +7,8 @@ public class AtributoDeEnderecoNaoEncontradoException extends EntidadeNaoEncontr
 		super(msg);
 	}
 	
-	public AtributoDeEnderecoNaoEncontradoException(String entidade, Long id) {
-		this(String.format("Não existe um cadastro de %s com código %d.",entidade, id));
+	public AtributoDeEnderecoNaoEncontradoException(Long id) {
+		this(String.format("Não existe um cadastro de endereco com código %d.", id));
 	}
 	
 }

@@ -6,6 +6,7 @@ DELETE FROM produto_categoria;
 DELETE FROM produto;
 DELETE FROM usuario;
 DELETE FROM carrinho;
+DELETE FROM endereco;
 
 SET foreign_key_checks = 1;
 
@@ -14,6 +15,7 @@ ALTER TABLE editora AUTO_INCREMENT = 1;
 ALTER TABLE produto AUTO_INCREMENT = 1;
 ALTER TABLE usuario AUTO_INCREMENT = 1;
 ALTER TABLE carrinho AUTO_INCREMENT = 1;
+ALTER TABLE endereco AUTO_INCREMENT = 1;
 
 INSERT INTO categoria(nome) VALUES('Marvel'), ('DC'), ('Fantasia'), ('HQ'), ('Manga'), ('Hulk'), ('Batman'), ('Isekai'), ('Konosuba'), ('Ecchi'), ('Gigant');
 
@@ -33,8 +35,5 @@ INSERT INTO usuario(nome, sobrenome, data_nascimento, cpf, email, senha, permiss
 
 INSERT INTO carrinho(produto_id, usuario_id, data_criacao, quantidade) VALUES(1, 2, CURDATE(), 10);
 
-
-
-
-
-
+INSERT INTO endereco (bairro,cep,localidade,logradouro,numero,uf,usuario_id)
+values ('Parque dos Camargos', '0643280', 'Barueri', 'Rua Gabriela', '25', 'SP', 2);

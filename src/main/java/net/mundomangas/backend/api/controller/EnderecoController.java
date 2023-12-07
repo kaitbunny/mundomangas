@@ -12,27 +12,37 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.mundomangas.backend.domain.dto.EnderecoDTO;
 import net.mundomangas.backend.domain.dto.UsuarioEnderecoDTO;
-import net.mundomangas.backend.domain.service.CadastroUsuarioEnderecoService;
+import net.mundomangas.backend.domain.model.Usuario;
+import net.mundomangas.backend.domain.service.CadastroEnderecoService;
 import net.mundomangas.backend.domain.service.PaginatedResponseService;
+import net.mundomangas.backend.domain.service.UsuarioService;
 
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/enderecos-user")
-public class UsuarioEnderecoController {
+public class EnderecoController {
 
 	@Autowired
-	private CadastroUsuarioEnderecoService cadastro;
+	UsuarioService usuarioService;
+	
+	@Autowired
+	private CadastroEnderecoService cadastro;
 
 	@GetMapping
 	public PaginatedResponseService<EnderecoDTO> listar(@RequestParam("page") Integer page,
 			Authentication authentication) {
-
-		return cadastro.listarPorPagina(page, authentication);
+		
+		Usuario usuario = usuarioService.findUsuario(authentication);
+		
+		return cadastro.listarPorPagina(page, usuario);
 	}
 
 	@PostMapping
 	public void adicionar(@RequestBody UsuarioEnderecoDTO endereco, Authentication authentication) {
-		cadastro.salvar(authentication, endereco);
+		
+		Usuario usuario = usuarioService.findUsuario(authentication);
+		
+		cadastro.salvar(usuario, endereco);
 	}
 	/*
 	 * @DeleteMapping("/{id}")

@@ -1,27 +1,29 @@
 package net.mundomangas.backend.domain.dto;
 
-import net.mundomangas.backend.domain.model.Logradouro;
+import net.mundomangas.backend.domain.model.Endereco;
 
-public record EnderecoDTO(Long id, String estado, String cidade, String bairro, String logradouro, String cep, String numero) {
-	
-	public EnderecoDTO(Logradouro log, String numero) {
+public record EnderecoDTO(Long id, String uf, String localidade,
+		String bairro, String logradouro, String cep, String numero) {
+
+	public EnderecoDTO(Endereco e) {
 		this(
-			log.getId(),
-			log.getBairro().getCidade().getEstado().getNome(),
-			log.getBairro().getCidade().getNome(),
-			log.getBairro().getNome(),
-			log.getNome(),
-			cepResponse(log.getCep()),
-			numero
+			e.getId(),
+			e.getUf(),
+			e.getLocalidade(),
+			e.getBairro(),
+			e.getLogradouro(),
+			formatCep(e.getCep()),
+			e.getNumero()
 		);
 	}
 	
-	public static String cepResponse(String cep) {
-		String formatedCep;
+	public static String formatCep(String cep) {
 		
-		formatedCep = cep.substring(0, 5) + "-" + cep.substring(5);
+		String responseCep = "";
 		
-		return formatedCep;
+		responseCep = cep.substring(0, 5) + "-" + cep.substring(5);
+		
+		return responseCep;
 	}
 	
 }

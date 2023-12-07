@@ -13,16 +13,31 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Bairro {
+public class Endereco {
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(nullable = false)
-	private String nome;
+	private String uf;
+	
+	@Column(nullable = false)
+	private String localidade;
+	
+	@Column(nullable = false)
+	private String bairro;
+	
+	@Column(nullable = false)
+	private String logradouro;
+	
+	@Column(nullable = false)
+	private String cep;
+	
+	@Column(nullable = false)
+	private String numero;
 	
 	@ManyToOne
-	@JoinColumn(name = "cidade_id", nullable = false)
-	private Cidade cidade;
+	@JoinColumn(name = "usuario_id", nullable = false)
+	private Usuario usuario;
 }
