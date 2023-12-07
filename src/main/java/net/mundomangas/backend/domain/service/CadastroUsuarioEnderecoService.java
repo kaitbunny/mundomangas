@@ -1,6 +1,7 @@
 package net.mundomangas.backend.domain.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import net.mundomangas.backend.domain.dto.EnderecoDTO;
 import net.mundomangas.backend.domain.dto.UsuarioEnderecoDTO;
 import net.mundomangas.backend.domain.exception.AtributoDeEnderecoNaoEncontradoException;
+import net.mundomangas.backend.domain.exception.EntidadeEmUsoException;
 import net.mundomangas.backend.domain.model.Logradouro;
 import net.mundomangas.backend.domain.model.Usuario;
 import net.mundomangas.backend.domain.model.UsuarioEndereco;
@@ -31,16 +33,21 @@ public class CadastroUsuarioEnderecoService {
 	private CadastroEnderecoService enderecoService;
 
 	public void salvar(Authentication authentication, UsuarioEnderecoDTO endereco) {
-		Logradouro logradouro = enderecoService.cadastrarPorCep(endereco.cep());
+		try {
+			Logradouro logradouro = enderecoService.cadastrarPorCep(endereco.cep());
 
-		Usuario usuario = usuarioService.findUsuario(authentication);
+			Usuario usuario = usuarioService.findUsuario(authentication);
 
-		UsuarioEndereco usuarioEndereco = new UsuarioEndereco();
-		usuarioEndereco.setEndereco(logradouro);
-		usuarioEndereco.setUsuario(usuario);
-		usuarioEndereco.setNumeroEndereco(endereco.numero());
+			UsuarioEndereco usuarioEndereco = new UsuarioEndereco();
+			usuarioEndereco.setEndereco(logradouro);
+			usuarioEndereco.setUsuario(usuario);
+			usuarioEndereco.setNumeroEndereco(endereco.numero());
 
-		repository.save(usuarioEndereco);
+			repository.save(usuarioEndereco);
+		}
+		catch(DataIntegrityViolationException e) {
+			throw new EntidadeEmUsoException("Endereco já cadastrado!");
+		}
 	}
 
 	public void excluir(Long id) {

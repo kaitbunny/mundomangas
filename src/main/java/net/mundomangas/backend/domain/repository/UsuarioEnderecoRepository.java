@@ -12,5 +12,4 @@ import net.mundomangas.backend.domain.model.UsuarioEndereco;
 public interface UsuarioEnderecoRepository extends JpaRepository<UsuarioEndereco, Long> {
 
 	Page<UsuarioEndereco> findByUsuario_Id(@Param("id") Long id, Pageable pageable);
-
 }

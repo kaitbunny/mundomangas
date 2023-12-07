@@ -6,11 +6,6 @@ DELETE FROM produto_categoria;
 DELETE FROM produto;
 DELETE FROM usuario;
 DELETE FROM carrinho;
-DELETE FROM estado;
-DELETE FROM cidade;
-DELETE FROM bairro;
-DELETE FROM logradouro;
-DELETE FROM usuario_endereco;
 
 SET foreign_key_checks = 1;
 
@@ -19,11 +14,6 @@ ALTER TABLE editora AUTO_INCREMENT = 1;
 ALTER TABLE produto AUTO_INCREMENT = 1;
 ALTER TABLE usuario AUTO_INCREMENT = 1;
 ALTER TABLE carrinho AUTO_INCREMENT = 1;
-ALTER TABLE estado AUTO_INCREMENT = 1;
-ALTER TABLE cidade AUTO_INCREMENT = 1;
-ALTER TABLE bairro AUTO_INCREMENT = 1;
-ALTER TABLE logradouro AUTO_INCREMENT = 1;
-ALTER TABLE usuario_endereco AUTO_INCREMENT = 1;
 
 INSERT INTO categoria(nome) VALUES('Marvel'), ('DC'), ('Fantasia'), ('HQ'), ('Manga'), ('Hulk'), ('Batman'), ('Isekai'), ('Konosuba'), ('Ecchi'), ('Gigant');
 
@@ -42,17 +32,6 @@ INSERT INTO usuario(nome, sobrenome, data_nascimento, cpf, email, senha, permiss
 INSERT INTO usuario(nome, sobrenome, data_nascimento, cpf, email, senha, permissao) VALUES('user', 'mundomangas', '2000-01-01', '11111111111', 'user@mundomangas.com', '$2a$10$uJOU5modsHDpJOZQZOym4ugyDzZ.3QhjiI2.rOdatcSVxZOBfbddy', 'USER');
 
 INSERT INTO carrinho(produto_id, usuario_id, data_criacao, quantidade) VALUES(1, 2, CURDATE(), 10);
-
-INSERT INTO estado (nome, sigla) VALUES('Acre', 'AC'), ('Alagoas', 'AL'), ('Amapá', 'AP'), ('Amazonas', 'AM'), ('Bahia', 'BA'), ('Ceará', 'CE'), ('Distrito Federal', 'DF'), ('Espírito Santo', 'ES'), ('Goiás', 'GO'), ('Maranhão', 'MA'), ('Mato Grosso', 'MT'), ('Mato Grosso do Sul', 'MS'), ('Minas Gerais', 'MG'), ('Pará', 'PA'), ('Paraíba', 'PB'), ('Paraná', 'PR'), ('Pernambuco', 'PE'), ('Piauí', 'PI'), ('Rio de Janeiro', 'RJ'), ('Rio Grande do Norte', 'RN'), ('Rio Grande do Sul', 'RS'), ('Rondônia', 'RO'), ('Roraima', 'RR'), ('Santa Catarina', 'SC'), ('São Paulo', 'SP'), ('Sergipe', 'SE'), ('Tocantins', 'TO');
-
-INSERT INTO cidade(nome, estado_id) VALUES('Barueri', 25), ('Carapicuíba', 25), ('Uberlândia', 13);
-
-INSERT INTO bairro(nome, cidade_id) VALUES('Parque dos Camargos', 1), ('Jardim Silveira', 1), ('Alphaville', 1);
-
-INSERT INTO logradouro(nome, cep, bairro_id) VALUES('Rua Graziela', '99436280', 1), ('Alameda Urubu', '99454050', 3);
-
-INSERT INTO usuario_endereco(usuario_id, endereco_id, numero_endereco) VALUES(1, 1, '13'), (2, 2, '542');
-
 
 
 
